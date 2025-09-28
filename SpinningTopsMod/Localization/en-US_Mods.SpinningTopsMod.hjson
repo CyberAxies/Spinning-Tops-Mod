@@ -1,0 +1,85 @@
+# This file will automatically update with entries for new content after a build and reload.
+
+Items: {
+	WoodenTop: {
+		DisplayName: Wooden Top
+		Tooltip: ""
+	}
+
+	HeavyMetal: {
+		DisplayName: Heavy Metal
+		Tooltip: ""
+	}
+
+	OnPoint: {
+		DisplayName: The Sharp Point
+		Tooltip: ""
+	}
+
+	SlipTop: {
+		DisplayName: Slip Top
+		Tooltip: ""
+	}
+
+	Bloodshed: {
+		DisplayName: Bloodshed
+		Tooltip: ""
+	}
+
+	Blight: {
+		DisplayName: Blight
+		Tooltip: ""
+	}
+
+	Waterwalker: {
+		DisplayName: Waterwalker
+		Tooltip: ""
+	}
+
+	WildSpore: {
+		DisplayName: Wild Spore
+		Tooltip: ""
+	}
+
+	Dungeoneer: {
+		DisplayName: Dungeoneer
+		Tooltip: ""
+	}
+
+	Caldera: {
+		DisplayName: Caldera
+		Tooltip: ""
+	}
+
+	OilJar: {
+		DisplayName: Oil Jar
+		Tooltip: ""
+	}
+
+	ShreddingWind: {
+		DisplayName: Shredding Wind
+		Tooltip: ""
+	}
+
+	ElementalTop: {
+		DisplayName: Elemental Top
+		Tooltip: ""
+	}
+}
+
+Projectiles: {
+	ExampleProj.DisplayName: Example Proj
+	WoodenTop.DisplayName: Wooden Top
+	MetalTop.DisplayName: Metal Top
+	DesertTop.DisplayName: Desert Top
+	SnowTop.DisplayName: Snow Top
+	CorruptTop.DisplayName: Corrupt Top
+	CrimsonTop.DisplayName: Crimson Top
+	OceanTop.DisplayName: Ocean Top
+	JungleTop.DisplayName: Jungle Top
+	DungeonTop.DisplayName: Dungeon Top
+	HellTop.DisplayName: Hell Top
+	Oil.DisplayName: Oil
+	N_edgeTOP.DisplayName: N_edge T O P
+	Elemental_Evil.DisplayName: Elemental_ Evil
+}

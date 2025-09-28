@@ -1,0 +1,26 @@
+before 2025-08/25  (i don rember bruh): 30-ish hours
+    -Added all prehardmode weapons (no spites)
+
+2025-09/18: 2 hours
+    - Started working on elemental top, on emode per biome
+    - Started working on world evils mode
+
+2025-09/24: 3 hours
+    - Added elemental top item and biomes
+    - Added biome switching
+    - Added biome switching text (TODO: Fix overlapping text)
+    - Almost finished world evils projectile (TODO: Add bouncing bewtwwen enemies, tweak stats)
+    - Created mindmap for biome concepts so i dont have to think for the other ones
+    - Added dust effects and sound to OilJar
+
+2025-09/27: 3 hours
+    Biome top;
+        - Fixed overlapping text on biome switch
+        - Reworked the mode switch logic
+        Evil mode;
+            - Finished Evil biome mode
+            - Added bouncing between enemies for Evil Biome mode
+            - Balanced Evil mode dps
+    - Fixed oiljar dust to look better
+    
+2025
