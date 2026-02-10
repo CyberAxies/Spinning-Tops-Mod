@@ -15,7 +15,7 @@ namespace SpinningTopsMod.Content.Items
 		public override void SetDefaults()
 		{
 
-			Item.damage = 20;
+			Item.damage = 12;
 			Item.crit = 16 -4; // Player has a base crit chance of 4, so we subtract it to get the actual crit chance
 			Item.knockBack = 3;
 			Item.useTime = 55; // How long it takes to use the item (fire rate)
@@ -41,7 +41,7 @@ namespace SpinningTopsMod.Content.Items
 			float maxDistance = 16f * 15; // consider the distance of the mouse up to 15 blocks away
 			if (dist.Length() <= maxDistance)
 			{
-				float scale = Functions.ScaleToRange(dist.Length(), 0f, maxDistance, 0f, Item.shootSpeed); // Scale the shoot speed based on the distance to the mouse cursor
+				float scale = Utils.ScaleToRange(dist.Length(), 0f, maxDistance, 0f, Item.shootSpeed); // Scale the shoot speed based on the distance to the mouse cursor
 				velocity = direction * scale; // Set the velocity based on the direction and scaled speed
 			}
 

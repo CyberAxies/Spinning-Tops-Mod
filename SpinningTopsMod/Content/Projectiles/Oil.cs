@@ -5,6 +5,8 @@ using Terraria.ModLoader;
 using Terraria.Audio;
 using System;
 using Terraria.Utilities;
+using static SpinningTopsMod.Utils;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace SpinningTopsMod.Content.Projectiles
 {
@@ -19,6 +21,16 @@ namespace SpinningTopsMod.Content.Projectiles
         {
             Projectile.CloneDefaults(ProjectileID.Ale); // Clone the defaults from the Oil Slick projectile
             Projectile.damage = 1;
+            Projectile.scale = 0.5f;
+            DrawOriginOffsetX = 16;
+            DrawOriginOffsetY = -10;
+
+            Projectile.ai[0] = 0;
+        }
+
+        public override void AI()
+        {   
+
         }
 
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damage)
@@ -26,28 +38,17 @@ namespace SpinningTopsMod.Content.Projectiles
             // Inflict Oiled debuff for 10 seconds (600 ticks)
             target.AddBuff(BuffID.Oiled, 600);
         }
-
+         int splashRadiusTiles = 10 * 16;
         public override void OnKill(int timeLeft)
         {
-            int splashRadiusTiles = 10 * 16;
 
-            foreach (NPC npc in Main.npc)
+            foreach(NPC target in Utils.AllNPCsWithinRangeOfPoint(Projectile.Center, splashRadiusTiles))
             {
-                if (npc.active && !npc.friendly && !npc.dontTakeDamage)
-                {
-                    // Calculate distance from projectile center to NPC center
-                    float dx = Projectile.Center.X - npc.Center.X;
-                    float dy = Projectile.Center.Y - npc.Center.Y;
-                    float distSqr = dx * dx + dy * dy;
-
-                    if (distSqr <= splashRadiusTiles * splashRadiusTiles)
-                    {
-                        // NPC is within the circular splash radius
-                        npc.AddBuff(BuffID.Oiled, 600); // Inflict Oiled debuff for 10 seconds (600 ticks)
-                    }
-                }
+                target.AddBuff(BuffID.Oiled, 600); // Inflict Oiled debuff for 10 seconds (600 ticks)
             }
-
+           
+           
+            // Visual and sound effects upon projectile death
             SoundEngine.PlaySound(SoundID.Item27, Projectile.position); // ice break sound, sounds like shattered glass cointainer for oil
 
             Vector2 startPosition = Main.rand.NextVector2Circular(3f, 3f);
@@ -64,6 +65,30 @@ namespace SpinningTopsMod.Content.Projectiles
             }
 
             base.OnKill(timeLeft);
+        }
+
+        Vector2 originOfRotation;
+        public override bool PreDraw(ref Color lightColor)
+        {
+           Texture2D texture = ModContent.Request<Texture2D>(Texture).Value;
+           float OriginX = texture.Width /3f;
+           float originY = texture.Height*2f / 3f;
+           originOfRotation = new Vector2(OriginX, originY);
+
+        // Draw the projectile with the specified origin of rotation
+            Main.EntitySpriteDraw(
+                texture, 
+                Projectile.Center - Main.screenPosition,
+                null, 
+                lightColor, 
+                Projectile.rotation, 
+                originOfRotation, 
+                Projectile.scale, 
+                SpriteEffects.None, 
+                0);
+        
+            
+            return false; // Return false to prevent the default drawing
         }
 
     }

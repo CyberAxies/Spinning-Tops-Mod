@@ -41,7 +41,7 @@ namespace SpinningTopsMod.Content.Items
 			float maxDistance = 16f * 15; // consider the distance of the mouse up to 15 blocks away
 			if (dist.Length() <= maxDistance)
 			{
-				float scale = Functions.ScaleToRange(dist.Length(), 0f, maxDistance, 0f, Item.shootSpeed); // Scale the shoot speed based on the distance to the mouse cursor
+				float scale = Utils.ScaleToRange(dist.Length(), 0f, maxDistance, 0f, Item.shootSpeed); // Scale the shoot speed based on the distance to the mouse cursor
 				velocity = direction * scale; // Set the velocity based on the direction and scaled speed
 			}
 

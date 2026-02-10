@@ -2,6 +2,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
+using SpinningTopsMod.Projectiles;
 
 namespace SpinningTopsMod.Content.Items
 { 
@@ -21,8 +22,9 @@ namespace SpinningTopsMod.Content.Items
 			Item.useTime = 70; // How long it takes to use the item (fire rate)
 			Item.useAnimation = 20; // How long the item is used for (animation time)
 			Item.DamageType = DamageClass.Melee;
-			Item.width = 0;
-			Item.height = 0;
+			Item.width = 16;
+			Item.height = 16;
+			Item.scale = 0.25f;
 			Item.useStyle = ItemUseStyleID.Swing;
 			Item.noMelee = true; // Prevents the item from doing damage when swung
 			Item.value = Item.sellPrice(silver: 5);
@@ -33,7 +35,7 @@ namespace SpinningTopsMod.Content.Items
 			Item.autoReuse = true;
 		}
 
-		// Import the ScaleToRange function from Assets/Functions.cs
+		// Import the ScaleToRange function from Assets/Utils.cs
 		// This function scales a value from one range to another
 		
 		public override void ModifyShootStats(Player player, ref Vector2 position, ref Vector2 velocity, ref int type, ref int damage, ref float knockback)
@@ -43,7 +45,7 @@ namespace SpinningTopsMod.Content.Items
 			float maxDistance = 16f * 15; // consider the distance of the mouse up to 15 blocks away
 			if (dist.Length() <= maxDistance)
 			{
-				float scale = Functions.ScaleToRange(dist.Length(), 0f, maxDistance, 0f, Item.shootSpeed); // Scale the shoot speed based on the distance to the mouse cursor
+				float scale = Utils.ScaleToRange(dist.Length(), 0f, maxDistance, 0f, Item.shootSpeed); // Scale the shoot speed based on the distance to the mouse cursor
 				velocity = direction * scale; // Set the velocity based on the direction and scaled speed
 			}
 

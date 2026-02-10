@@ -39,24 +39,21 @@ namespace SpinningTopsMod.Content.Items
 			float maxDistance = 16f * 15; // consider the distance of the mouse up to 15 blocks away
 			if (dist.Length() <= maxDistance)
 			{
-				float scale = Functions.ScaleToRange(dist.Length(), 0f, maxDistance, 0f, Item.shootSpeed); // Scale the shoot speed based on the distance to the mouse cursor
+				float scale = Utils.ScaleToRange(dist.Length(), 0f, maxDistance, 0f, Item.shootSpeed); // Scale the shoot speed based on the distance to the mouse cursor
 				velocity = direction * scale; // Set the velocity based on the direction and scaled speed
 			}
 
 			position += Vector2.Normalize(velocity) * 16f; // Offset the position by 10 pixels in the direction of the velocity
 			
-			base.ModifyShootStats(player, ref position, ref velocity, ref type, ref damage, ref knockback);
 		}
 		public override void AddRecipes()
 		{
 			Recipe recipe = CreateRecipe();
-			recipe.AddIngredient(ItemID.StoneBlock, 15);
 			recipe.AddRecipeGroup(RecipeGroupID.IronBar , 13); // Use the defualt recipe group for Iron/Lead bars
 			recipe.AddRecipeGroup("SpinningTopsMod:SilverBar", 11); // Use the custom recipe group for Silver/Tungsten bars
 			recipe.AddRecipeGroup("SpinningTopsMod:GoldBar", 7); // Use the custom recipe group for Gold/Platinum bars
-			recipe.AddIngredient(ItemID.Diamond, 1); // Add wood to the recipe
-			recipe.AddTile(TileID.Anvils);
-			recipe.AddTile(TileID.Furnaces);
+			recipe.AddIngredient(ItemID.Diamond, 1); // Rare gem, so you can't craft it early
+			recipe.AddTile(TileID.Hellforge); // Need to explore hell to craft this item
 			recipe.Register();
 		}
 	}

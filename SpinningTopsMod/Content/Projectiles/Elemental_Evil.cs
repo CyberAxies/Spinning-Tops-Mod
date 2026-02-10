@@ -95,14 +95,14 @@ namespace SpinningTopsMod.Content.Projectiles
             }
 
             // Step up logic to handle steps and hammered tiles
-            float stepSpeed = Projectile.velocity.X;
-            float gfxOffY = 0f;
+            float stepSpeed = 1f;
+            Projectile.gfxOffY = -1f;
             Collision.StepUp(ref Projectile.position,
              ref Projectile.velocity,
               Projectile.width,
                Projectile.height,
                ref stepSpeed,
-                ref gfxOffY);
+                ref Projectile.gfxOffY, 1);
         }
 
         public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac)
@@ -143,6 +143,7 @@ namespace SpinningTopsMod.Content.Projectiles
             {
 
                 // Spawn projectile on hit
+                
                 if (Projectile.ai[0] % 2 == 0) // on even hits
                 {
                     for (int i = 0; i < 3; i++) // spawn 3 ichor sprays
@@ -164,32 +165,39 @@ namespace SpinningTopsMod.Content.Projectiles
 
 
                         Projectile cursedFlame = Projectile.NewProjectileDirect(Projectile.GetSource_FromThis(),
-                        target.Center, Vector2.Zero, ProjectileID.CursedFlameFriendly, (int)(Projectile.damage * 0.25f), 0f, Projectile.owner);
+                        target.Center, Vector2.Zero, ProjectileID.CursedFlameFriendly, (int)(Projectile.damage * 0.2f), 0f, Projectile.owner);
                         cursedFlame.velocity = 6 * up.RotatedBy(i - 2 * Math.Clamp(i - 1, 0f, 1f) * i);
                     }
 
                     target.AddBuff(BuffID.CursedInferno, 60 * 3); // Apply cursed flames debuff for 3 seconds (deals 24 dps)
                 }
 
-                float temp = 16 * 60 * 16 * 60; // 16 pixels = 1 tile
+                float temp = 16 * 60 * 16 * 60; // 16 pixels = 1 tile                
                 Vector2 direction = Vector2.Zero;
+               
                 foreach (NPC opps in Main.npc) // itterate through all NPCs
                 {
                     if (opps.active && !opps.friendly && opps.whoAmI != target.whoAmI && !opps.dontTakeDamage) // If the NPC is active, not friendly, and not the one we just hit
                     {
                         float sqrDist = (opps.Center - Projectile.Center).LengthSquared(); // Get the squared distance to avoid a square root calculation
-                        if (sqrDist < temp) // If the NPC is within 100 tiles (or closer than the closest found so far)
-                        {
+                         if (sqrDist < temp) // If the NPC is within 100 tiles (or closer than the closest found so far)
+                         {
                             temp = sqrDist; // Update the closest distance
-                            direction = Vector2.Normalize(opps.Center - Projectile.Center + opps.velocity * (opps.velocity/Projectile.velocity)); // Get the direction to the closest NPC
+                                                // Reset velocity before retargeting
+                                                // If velocity is very low, set a default direction
 
-                        }
+                             direction = Vector2.Normalize(opps.Center - Projectile.Center
+                             + opps.velocity * (opps.velocity / (Projectile.velocity + new Vector2(0.1f,0.1f)))); // Get the direction to the closest NPC
+
+
+                         }
                     }
-                }
+                 }
+                
 
                 if (direction != Vector2.Zero) { Projectile.velocity = direction * Projectile.velocity.Length() * 0.9f;} // If a valid target was found, adjust velocity towards it
                 else if (direction == Vector2.Zero){ Projectile.velocity *= -0.8f; } // If no valid target was found, just slow down and reverse the projectile
-
+                
             }
         }
 

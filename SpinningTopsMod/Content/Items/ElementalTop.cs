@@ -8,6 +8,7 @@ using System;
 using SpinningTopsMod.Content.Projectiles;
 
 
+
 namespace SpinningTopsMod.Content.Items
 { 
 	// This is a basic item template.
@@ -50,18 +51,18 @@ namespace SpinningTopsMod.Content.Items
 					Item.useTime = 60; // How long it takes to use the item (fire rate)
 					Item.width = 32;
 					Item.height = 32;
-					Item.shoot = ModContent.ProjectileType<Projectiles.Elemental_Evil>();
+					Item.shoot = ModContent.ProjectileType<Elemental_Evil>();
 					Item.shootSpeed = 7.5f;
 					Item.UseSound = SoundID.Item1;
 					break;
-				case BiomeMode.Sky:
-					Item.damage = 1;
-					Item.crit = 16 - 4; // Player has a base crit chance of 4, so we subtract it to get the actual crit chance
+				case BiomeMode.Hallowed:
+					Item.damage = 50;
+					Item.crit = 10 - 4; // Player has a base crit chance of 4, so we subtract it to get the actual crit chance
 					Item.knockBack = 5f;
-					Item.useTime = 60; // How long it takes to use the item (fire rate)
+					Item.useTime = 70; // How long it takes to use the item (fire rate)
 					Item.width = 32;
 					Item.height = 32;
-					Item.shoot = ModContent.ProjectileType<Projectiles.WoodenTop>();
+					Item.shoot = ModContent.ProjectileType<Elemental_Hallowed>();
 					Item.shootSpeed = 7.5f;
 					Item.UseSound = SoundID.Item1;
 					break;
@@ -82,7 +83,7 @@ namespace SpinningTopsMod.Content.Items
 			float maxDistance = 16f * 15; // consider the distance of the mouse up to 15 blocks away
 			if (dist.Length() <= maxDistance)
 			{
-				float scale = Functions.ScaleToRange(dist.Length(), 0f, maxDistance, 0f, Item.shootSpeed); // Scale the shoot speed based on the distance to the mouse cursor
+				float scale = Utils.ScaleToRange(dist.Length(), 0f, maxDistance, 0f, Item.shootSpeed); // Scale the shoot speed based on the distance to the mouse cursor
 				velocity = direction * scale; // Set the velocity based on the direction and scaled speed
 			}
 
@@ -102,8 +103,7 @@ namespace SpinningTopsMod.Content.Items
 			{
 				switchCooldown = 10; // Set the cooldown to 10 frames (0.178 seconds at 60 FPS)
 
-				if (Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.LeftAlt) ||
-				Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.RightAlt))
+				if (SpinningTopsModKeybinds.ElementalTopReverseCycle.JustPressed)
 				{
 					mode--; // Cycle to the previous mode
 					if ((int)mode < 0)
@@ -181,7 +181,7 @@ namespace SpinningTopsMod.Content.Items
 			recipeCrim.AddIngredient<SlipTop>(1); // Snow rep
 			recipeCrim.AddIngredient<OnPoint>(1); // Desert rep
 			recipeCrim.AddIngredient<Bloodshed>(1);
-			recipeCrim.AddTile(TileID.Anvils);
+			recipeCrim.AddTile(TileID.Anvils); 
 			recipeCrim.Register();
 		}
 	}

@@ -23,4 +23,73 @@ before 2025-08/25  (i don rember bruh): 30-ish hours
             - Balanced Evil mode dps
     - Fixed oiljar dust to look better
     
-2025
+2025-10/24: 3 hours
+    - added hallowed mode
+    - fixed some bugs
+
+2025-10/25: 4 hours
+    - fixed more bugs
+    - Reworked hallowed mode
+
+2025-10/26: 1 hour
+    - experimented with shader files, ill continue the experiments later
+
+2025-10/27: 1 hour
+    - messed around with shaders more, got it to compile properly today by using C# devkit .NET build and double checking file paths
+    - TODO: figure out how to load shaders into the mode
+
+2025-10/29: 3 hours
+    - relised i could precompute shader textures and store them as Texture2d files instead in most cases
+    - Copied utils from calamity
+    - Refactored a bunch of code
+    - Reworked WoodenTop (the template)
+    - Deleted shader crap
+
+2025-11/07: 2 hours
+    -sprite stuff
+    - Snowtop reworked
+    - TODO: Fix the snowtop sprite looking like ahh :( ingame
+2025-11/15: 2 hours
+    - Finally fixed the sprite and redering problems
+    - Snowtop rebalance by extending the duration of the projetile and the maxium hits
+    - Added distance check to despawn the projectile if its 100 blocks away or more. 
+    - TODO: retcon the woodentop code to match the snowtop, 
+            Finilize audio effects and VFX for snowtop
+    - note to self: Maybe use Snowtop as the snowtop as a base, and make a new blueprint for tops?
+    
+2025-11/25: 2 Hours
+    - Filmed some content
+    - Finished snowtop
+    - desserttop makes problems
+
+2026-01/14: 4 hours
+    - REALLY finished the snowtop
+    - Finished the deserttop
+    - Added item descrtiptions for both
+
+2026-01/16: 4 hours
+    - Finished Heavy Metal top
+    - added a disc. 
+    - Made the snowtop not hit through walls
+    - Fixed the afterimage rendering helper
+    (4 tops down already yayyy 8D)
+
+Missed one - maybe like 2 hours of hotfixes
+
+2026-02/05: 2 hours
+    - added the hell top texture and partially filled in the new stuff into the formater
+    
+2026-02/06: 4 hours-ish?????
+    - It would be cool to have tops collide with each other
+    - Did the default behavoiurs in a abstract class
+    - got copilot to do a ton of stuff inc. optimise the heck out of it
+    - DID NOT CHECK IF IT WORKS IN GAME YET
+    - TODO: 
+        +Finish refactoring the base top
+        +Implement the changes and push them to the actual top.cs code for each top type 
+        + my brain fried it's like 1 AM right now uhghghg
+2026-02/08: 2 hours ish ??
+    - added rendering into the base abstract class
+    - More stuff from the formater pushed into the base case
+
+2026

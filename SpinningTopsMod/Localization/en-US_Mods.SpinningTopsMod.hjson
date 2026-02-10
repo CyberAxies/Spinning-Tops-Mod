@@ -8,17 +8,42 @@ Items: {
 
 	HeavyMetal: {
 		DisplayName: Heavy Metal
-		Tooltip: ""
+		Tooltip:
+			'''
+			"Fake diamonds don't shine at all"
+			Pierce: 20
+			Bounces: 5
+			Super heavy and slow, but won't be knocked back by enemies
+			Causes a shockwave when hitting the ground fast
+			The more enemies it hits, the hotter the metal gets
+			After 10 hits, becomes burning hot
+			'''
 	}
 
 	OnPoint: {
-		DisplayName: The Sharp Point
-		Tooltip: ""
+		DisplayName: Sharp Point
+		Tooltip:
+			'''
+			"The cactus has the right to defend itself"
+			Pierce: 10
+			Bounces: 20
+			Hits cause cactus spike to shoot out,
+			and give the player Thorns buff for 4 seconds
+			Becomes much stronger and faster on sand
+			'''
 	}
 
 	SlipTop: {
 		DisplayName: Slip Top
-		Tooltip: ""
+		Tooltip:
+			'''
+			Make your enemies jolly, by force!
+			Pierce: 20
+			Bounces: 20
+			Ignores Friction
+			Hits inflict enemies with Frostburn for 5 seconds
+			Emits a frost aura that deals 10 dmg per second
+			'''
 	}
 
 	Bloodshed: {
@@ -32,8 +57,15 @@ Items: {
 	}
 
 	Waterwalker: {
-		DisplayName: Waterwalker
-		Tooltip: ""
+		DisplayName: Shelly
+		Tooltip:
+			'''
+			Meet Shelly the snail, now with added animal cruelty!
+			Pierce: 10
+			Bounces: 20
+			Can float on water, and becomes much stronger underwater
+			100% crit chance against wet enemies
+			'''
 	}
 
 	WildSpore: {
@@ -53,7 +85,12 @@ Items: {
 
 	OilJar: {
 		DisplayName: Oil Jar
-		Tooltip: ""
+		Tooltip:
+			'''
+
+			Squeeze the oils out of slime gel and throw it at your enemies
+			Makes enemies within 10 tiles Oiled for 10 seconds
+			'''
 	}
 
 	ShreddingWind: {
@@ -64,6 +101,11 @@ Items: {
 	ElementalTop: {
 		DisplayName: Elemental Top
 		Tooltip: ""
+	}
+
+	BlueprintTopHandler: {
+		Tooltip: ""
+		DisplayName: Blueprint Top Handler
 	}
 }
 
@@ -82,4 +124,10 @@ Projectiles: {
 	Oil.DisplayName: Oil
 	N_edgeTOP.DisplayName: N_edge T O P
 	Elemental_Evil.DisplayName: Elemental_ Evil
+	Elemental_Hallowed.DisplayName: Elemental_ Hallowed
+	magicM_clone.DisplayName: magic M_clone
+	Typeless.NobodyKnows.DisplayName: Nobody Knows
+	Blueprint.DisplayName: Blueprint
 }
+
+Keybinds.CycleModesReverse.DisplayName: Cycle Modes Reverse

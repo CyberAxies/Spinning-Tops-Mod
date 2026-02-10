@@ -101,15 +101,15 @@ namespace SpinningTopsMod.Content.Projectiles
                 Projectile.velocity.Y *= 3.5f; // Increase the Y velocity on the first frame
             }
 
-            // Step up logic to handle steps and hammered tiles
-            float stepSpeed = Projectile.velocity.X;
-            float gfxOffY = 0f;
+             // Step up logic to handle steps and hammered tiles
+            float stepSpeed = 1f;
+            Projectile.gfxOffY =  0;
             Collision.StepUp(ref Projectile.position,
              ref Projectile.velocity,
               Projectile.width,
                Projectile.height,
                ref stepSpeed,
-                ref gfxOffY);
+                ref Projectile.gfxOffY, 1);
         }
 
         public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac)
