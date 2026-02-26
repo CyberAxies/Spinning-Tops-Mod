@@ -15,34 +15,29 @@ namespace SpinningTopsMod.Content.Projectiles
         #region Override and import Virtual parameters from the top Base
         // REMOVE THIS, Add your own texture in the same folder as the projectile, and give it the same name (must be .png)
         public override string Texture => "SpinningTopsMod/Assets/Textures/Top_glow";
-        // Combat parameters
-        protected override int MaxHits => base.MaxHits;
-        protected override int MaxBounces => base.MaxBounces;
-        protected override int DefaultLocalNPCHitCooldown => base.DefaultLocalNPCHitCooldown;
-        protected override int DefaultTimeLeftSeconds => base.DefaultTimeLeftSeconds;
+        
+        // Combat parameters - Override these to customize your top
+        protected override int MaxHits => 15;
+        protected override int MaxBounces => 10;
+        protected override float topMass => 1f;
+        protected override int DefaultLocalNPCHitCooldown => 18;
+        protected override int DefaultTimeLeftSeconds => 10;
+        
         // Physics parameters
-        protected override float Gravity => base.Gravity;
-        protected override float MaxFallSpeed => base.MaxFallSpeed;
-        protected override float DefualtArcHeightMult => base.DefualtArcHeightMult;
-        // Rendering Parameters (glowmask, etc. ) if needed:
+        protected override float Gravity => 0.1f;
+        protected override float MaxFallSpeed => 8f;
+        protected override float frictionFactor => 0.99f;
+        
+        // Rendering Parameters
+        protected override int DefualtTextureFrames => 4;
         //protected override Texture2D GlowMask => base.GlowMask;
         #endregion
 
         #region Initialization
-        // Set static defualts, etc can go here
-        // Use DefualtTextureFrames for vertical frame count. Default is 4
-
-        // normally tile collisions and hit npc maxes are handled by penetrate,
-        // but since we want custom behavior we handle them manually
-        // especially since gliding along the ground normally triggers tile collisions
-        
         public override void SetDefaults()
         {
-            // Apply base defaults; derived classes can override the protected properties on SpinningTopBase
+            // Apply base defaults with overrideable parameters
             ApplyDefaultDefaults();
-
-            // Override any additional defaults here if needed:
-            //Projectile.coldDamage = true;
         }
         #endregion
         #region Ai
@@ -98,34 +93,21 @@ namespace SpinningTopsMod.Content.Projectiles
         #region Hit NPC
         public override void OnHitNPC(NPC target, NPC.HitInfo hit, int damageDone)
         {
-            // Increment the ai[0] counter when hitting an NPC
-            Projectile.ai[0]++;
-                if (Projectile.ai[0] >= MaxHits) // If it has hit max NPCs, destroy the projectile
-                Projectile.Kill();
+            base.OnHitNPC(target, hit, damageDone);
             // you can add kill effects that only trigger when max hits is reached, if desired
             // Generic kill effects go in OnKill()
-            else
-            {
-                Projectile.velocity = -Projectile.velocity * 0.8f; // Reverse the velocity
+            
+            Projectile.velocity = -Projectile.velocity * 0.8f; // Reverse the velocity
 
-                // Hit effects: 
-            }
+            // Hit effects: 
+            
         }
         #endregion
         public override void OnKill(int timeLeft)
         {
+            Projectile.ai[0]++;
             base.OnKill(timeLeft);
 
-            // Create a dust effect when the projectile is destroyed
-            for (int i = 0; i < 10; i++)
-            {
-                Dust dust = Dust.NewDustPerfect(Projectile.Center, DustID.WoodFurniture, Vector2.Zero, 100, default, 1.5f);
-                dust.position = Projectile.Center;
-                dust.velocity = new Vector2(1, 0).RotatedBy(i * (2 * Math.PI / 10)) * 2f; // Spread the dust in a circular pattern
-                Vector3 DustColor = dust.color.ToVector3(); // Get the color of the dust
-                Lighting.AddLight(Projectile.position, DustColor); // Add light to the dust
-            }
-            SoundEngine.PlaySound(SoundID.Dig, Projectile.position);
             Collision.HitTiles(Projectile.position, Projectile.velocity, Projectile.width, Projectile.height);
         }
         #region Rendering
