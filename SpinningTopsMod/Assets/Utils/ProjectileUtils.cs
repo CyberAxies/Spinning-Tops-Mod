@@ -202,6 +202,22 @@ namespace SpinningTopsMod
         #endregion
         ///////////////////////////////////
         #region Projectile Spawning
+
+        public static Projectile[] projTripleShot(IEntitySource source, Vector2 spawnPosition, int projectileType, Vector2 targetDir, float projSpeed, int damage, float knockBack = 0, float spreadAngle = 60f)
+        {
+            Projectile[] projArray = new Projectile[3];
+            Vector2 velocity = targetDir * projSpeed;
+            float angle = degreesToRadians(spreadAngle);
+            velocity.RotatedBy(-angle);
+            for (int i = 0; i < 3; i++)
+            {
+                Vector2 newVel = velocity.RotatedBy(i*angle);
+                projArray[i] = Projectile.NewProjectileDirect(source, spawnPosition, newVel, projectileType, damage, knockBack);
+
+            }
+            return projArray;
+        }
+
         public static Projectile ProjectileRain(IEntitySource source, Vector2 targetPos, float xLimit, float xVariance, float yLimitLower, float yLimitUpper, float projSpeed, int projType, int damage, float knockback, int owner)
         {
             float x = targetPos.X + Main.rand.NextFloat(-xLimit, xLimit);

@@ -89,6 +89,7 @@ namespace SpinningTopsMod
                     1.5f);
                 dust.noGravity = !gravity;
                 Vector2 tanget = offset.RotatedBy(MathHelper.PiOver2).SafeNormalize(Vector2.Zero);
+                dust.customData = dustSpeed;
                 Vector2 tangetVelocity = dustSpeed == 0 ? Vector2.Zero : tanget * dustSpeed;
                 Vector2 growVelocity = dustGrow == 0 ? Vector2.Zero : offset.SafeNormalize(Vector2.Zero) * dustGrow;
                 dust.velocity = tangetVelocity + growVelocity;
@@ -96,24 +97,19 @@ namespace SpinningTopsMod
             }
             return dusts;
         }
+       
+       
         /// <summary>
-        /// Spawns a ring of dust particles around a given position.
-        /// Dust particles velocity is 0 and cannot be controlled.
-        /// Returns null.
+        /// Spawns an explosion of dust particles from a given position, with random velocities.
         /// </summary>
-        /// <param name="position"></param>
+        /// <param name="position"> Explosion center</param>
         /// <param name="dustType"></param>
-        /// <param name="radius"></param>
-        /// <param name="dustAmount"></param>
+        /// <param name="dustAmount"> Number of dust instances</param>
+        /// <param name="minSpeed"></param>
+        /// <param name="maxSpeed"></param>
         /// <param name="dustColor"></param>
         /// <param name="gravity"></param>
-        /// <returns></returns>
-        public static Dust DustRing(Vector2 position, int dustType, float radius, int dustAmount, Color? dustColor = null, bool gravity = false)
-        {
-            DustRing(position, dustType, radius, dustAmount, 0, 0, dustColor, gravity);
-            return null;
-        }
-
+        /// <param name="dustScale"></param> <summary>
         public static void DustExplosion(Vector2 position, int dustType, int dustAmount, float minSpeed, float maxSpeed, Color? dustColor = null, bool gravity = true, float dustScale = 1f)
         {
             for (int i = 0; i < dustAmount; i++)
@@ -133,8 +129,17 @@ namespace SpinningTopsMod
             }
             
         }
-
-        public static void DustGoldenRatioEmitter(Vector2 position, int dustType, int dustAmount, float speed, Color? dustColor = null, bool gravity = true, float dustScale = 1f)
+        /// <summary>
+        /// Emits out dust in a spiral pattern based on the golden ratio
+        /// </summary>
+        /// <param name="position"> Spiral center</param>
+        /// <param name="dustType"></param>
+        /// <param name="dustAmount"></param>
+        /// <param name="speed"> The speed each dust gets shot out at</param>
+        /// <param name="dustColor"></param>
+        /// <param name="gravity"></param>
+        /// <param name="dustScale"></param>
+        public static void DustGoldenRatioEmitter(Vector2 position, int dustType, int dustAmount, float speed, Color? dustColor = null, bool gravity = false, float dustScale = 1f)
         {
             float angleStep = GoldenAngle;
             for (int i = 0; i < dustAmount; i++)
@@ -147,6 +152,120 @@ namespace SpinningTopsMod
                     dustScale);
                 dust.noGravity = !gravity;
             }  
+        }
+        /// <summary>
+        /// Horizontal puff of smoke/dust at the edges of a box
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="dustType"></param>
+        /// <param name="dustAmount"></param>
+        /// <param name="radius"></param>
+        /// <param name="dustColor"></param>
+        /// <param name="dustScale"></param>
+        /// <param name="speed"></param>
+        public static void dustPuffAtEdges(Vector2 position, int dustType, int dustAmount, float radius, Color? dustColor = null, float dustScale = 1f, float speed = 2f)
+        {
+            for (int i = 0; i < dustAmount; i++)
+            {
+                int dir = i%2 == 0 ? 1 : -1;
+                Vector2 offset =  new Vector2(dir * radius, 0);
+                Vector2 pos = position + offset;
+                Vector2 velocity =  new Vector2(dir*speed, -speed);
+                Dust dust = Dust.NewDustPerfect(pos,
+                    dustType,
+                    velocity,
+                    100,
+                    dustColor.HasValue ? dustColor.Value : default,
+                    dustScale);
+                    dust.noGravity = true;
+            }
+        }
+        /// <summary>
+        /// Horizontal slam of dust outwards from a surface, where the dust travels vertically paralell to the surface
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="dustType"></param>
+        /// <param name="dustAmount"></param>
+        /// <param name="minSpeed"></param>
+        /// <param name="maxSpeed"></param>
+        /// <param name="spreadRange"></param>
+        /// <param name="dustColor"></param>
+        /// <param name="gravity"></param>
+        /// <param name="dustScale"></param>
+        public static void dustSlamOutwards(Vector2 position, int dustType, int dustAmount, float minSpeed, float maxSpeed, float spreadRange ,Color? dustColor = null, bool gravity = true, float dustScale = 1f)
+        {
+            for (int i = 0; i < dustAmount; i++)
+            {
+                float speed = Main.rand.NextFloat(minSpeed, maxSpeed);
+                float pos =  position.X + Main.rand.NextFloat(-spreadRange, spreadRange);
+                Vector2 velocity = new Vector2(Main.rand.NextFloat(), speed);
+
+                Dust particalSpray = Dust.NewDustPerfect(new Vector2(pos, position.Y),
+                    dustType,
+                    velocity,
+                    100,
+                    dustColor.HasValue ? dustColor.Value : default,
+                    dustScale + Main.rand.NextFloat(-0.5f, 1f));
+                particalSpray.noGravity = !gravity;
+                
+            }   
+        }
+        /// <summary>
+        /// Spawns a vertical slam of dust outwards from a vertical surface, where dust travels horizontally
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="dustType"></param>
+        /// <param name="dustAmount"></param>
+        /// <param name="minSpeed"></param>
+        /// <param name="maxSpeed"></param>
+        /// <param name="spreadRange"></param>
+        /// <param name="dustColor"></param>
+        /// <param name="gravity"></param>
+        /// <param name="dustScale"></param>
+        public static void dustSlamVertical(Vector2 position, int dustType, int dustAmount, float minSpeed, float maxSpeed, float spreadRange ,Color? dustColor = null, bool gravity = true, float dustScale = 1f)
+        {
+            for (int i = 0; i < dustAmount; i++)
+            {
+                float speed = Main.rand.NextFloat(minSpeed, maxSpeed);
+                float pos =  position.Y + Main.rand.NextFloat(-spreadRange, spreadRange);
+                Vector2 velocity = new Vector2(0, speed);
+
+                Dust particalSpray = Dust.NewDustPerfect(new Vector2(position.X, pos),
+                    dustType,
+                    velocity,
+                    100,
+                    dustColor.HasValue ? dustColor.Value : default,
+                    dustScale + Main.rand.NextFloat(-0.5f, 1f));
+                particalSpray.noGravity = !gravity;
+                
+            }  
+        }
+        /// <summary>
+        /// Spawns a vertical puff of dust at the edges of a box, where the dust travels horizontally away from the center
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="dustType"></param>
+        /// <param name="dustAmount"></param>
+        /// <param name="radius"></param>
+        /// <param name="dustColor"></param>
+        /// <param name="dustScale"></param>
+        /// <param name="speed"></param>
+        public static void dustPuffEdgesVertical(Vector2 position, int dustType, int dustAmount, float radius, Color? dustColor = null, float dustScale = 1f, float speed = 2f)
+        {
+            for (int i = 0; i < dustAmount; i++)
+            {
+                int dir = i%2 == 0 ? 1 : -1;
+                Vector2 offset =  new Vector2(0, dir * radius);
+                Vector2 pos = position + offset;
+                Vector2 velocity =  new Vector2(speed, dir*speed);
+                Dust dust = Dust.NewDustPerfect(pos,
+                    dustType,
+                    velocity,
+                    100,
+                    dustColor.HasValue ? dustColor.Value : default,
+                    dustScale);
+                    dust.noGravity = true;
+            }
         }
     }
 }

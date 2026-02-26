@@ -156,6 +156,87 @@ namespace SpinningTopsMod
 
             return allTargets;
         }
+        /// <summary>
+        /// Loops over every NPC within 100 tiles and detects if their
+        /// hitbox intersects with the given rectangle.
+        /// Can optionally ignore tiles between the rectangle and the npcs
+        /// </summary>
+        /// <param name="center"> the center of the rectangle</param>
+        /// <param name="size"> Vector2 that hold the width in the X and the height in Y.
+        /// Width and height are the total side lengths of the rectangle</param>
+        /// <param name="ignoreTiles"></param>
+        /// <returns></returns> <summary>
+        public static List<NPC> allNPCsInRectangle(Vector2 center, Vector2 size, bool ignoreTiles = false)
+        {
+            List<NPC> allTargets = new List<NPC>();
+            float distSquared = 1600 * 1600; // 100 tiles is 1600 pixels, way more than the screen size, so it's enough for any rectangle
+            
+            Rectangle area = new Rectangle( 
+                (int)(center.X - size.X/2), // Top left corner X
+                (int)(center.Y - size.Y/2), // Top left corner Y
+                (int)size.X, // Width
+                (int)size.Y ); // Height
+
+            for (int index = 0; index < Main.npc.Length; index++)
+            {
+                if (Main.npc[index].CanBeChasedBy(null, false) && // Can we hit this NPC?
+                    Vector2.DistanceSquared(center, Main.npc[index].Center) < distSquared) // Is the NPC close?
+                {
+                    // Check if the NPCs hitbox intersects with the area rectangle
+                    Rectangle npcHitbox = Main.npc[index].Hitbox;
+                    NPC npc = Main.npc[index];
+                    if (!area.Intersects(npcHitbox))
+                        continue;
+
+                    bool canHit = true;
+                    if (!ignoreTiles)
+                        // Check line of sight from the center of the area to the center of the NPC
+                        canHit = Collision.CanHit(center - new Vector2(16, 16), 32, 32, npc.Center, npcHitbox.Width, npcHitbox.Height);
+
+                    if (canHit)
+                    {
+                        allTargets.Add(Main.npc[index]);
+                    }
+                }
+            }
+
+            return allTargets;
+        }
+        /// <summary>
+        /// Overload that handles rectangle input instead of center and size,
+        /// Be careful! XNA Rectangles position is defined by the top-left corner, not the center
+        /// </summary>
+        /// <param name="area"></param>
+        /// <param name="ignoreTiles"></param>
+        /// <returns></returns>
+        public static List<NPC> allNPCsInRectangle(Rectangle area, bool ignoreTiles = false)
+        {
+            List<NPC> allTargets = new List<NPC>();
+            float distSquared = 1600 * 1600;
+
+            for (int index = 0; index < Main.npc.Length; index++)
+            {
+                if (Main.npc[index].CanBeChasedBy(null, false) &&
+                    Vector2.DistanceSquared(area.Center.ToVector2(), Main.npc[index].Center) < distSquared)
+                {
+                    Rectangle npcHitbox = Main.npc[index].Hitbox;
+                    NPC npc = Main.npc[index];
+                    if (!area.Intersects(npcHitbox))
+                        continue;
+
+                    bool canHit = true;
+                    if (!ignoreTiles)
+                        canHit = Collision.CanHit(area.Center.ToVector2(), 32, 32, npc.Center, npcHitbox.Width, npcHitbox.Height);
+
+                    if (canHit)
+                    {
+                        allTargets.Add(Main.npc[index]);
+                    }
+                }
+            }
+
+            return allTargets;
+        }
 
     }
 }

@@ -132,6 +132,27 @@ namespace SpinningTopsMod
             return (tilesPerSecond * 16f) / (60f * numUpdates);
         }
         /// <summary>
+        /// Sinusoidal interpolator for smoothing (ease in/out).
+        /// Input t is expected in [0,1]. Output is also in [0,1].
+        /// Use like: MathHelper.Lerp(a, b, Utils.Sinusoidal(t));
+        /// </summary>
+        public static float Sinusoidal(float t)
+        {
+            t = Math.Clamp(t, 0f, 1f);
+            return (float)(0.5 * (1 - Math.Cos(Math.PI * t)));
+        }
+
+        /// <summary>
+        /// Power interpolator. Returns t^power (clamped) so you can get ease-in behavior
+        /// for power &gt; 1, or ease-out by using 1 - (1-t)^power, etc. Example: Utils.Power(t, 2) for quadratic.
+        /// Use like: MathHelper.Lerp(a, b, Utils.Power(t, 3));
+        /// </summary>
+        public static float Power(float t, float power)
+        {
+            t = Math.Clamp(t, 0f, 1f);
+            return (float)Math.Pow(t, power);
+        }
+        /// <summary>
         /// Returns a Vector2 that is tanget to the input vector.
         /// Is turned 90 degrees anti-clockwise by defualt.
         /// Just multiply by -1 to get clockwise tanget.
@@ -141,6 +162,11 @@ namespace SpinningTopsMod
         public static Vector2 getTangetToVector(Vector2 vector)
         {
             return new Vector2(-vector.Y, vector.X);
+        }
+
+        public static float degreesToRadians(float degrees)
+        {
+            return degrees/360f * twoPi;
         }
     }
 }
